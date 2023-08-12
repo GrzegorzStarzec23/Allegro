@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/allegro
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+app:
+  providers:
+    product:
+      api-key: d4a971fd8bmsh6c6239fc7dfd114p151035jsn699ad2f4f86b
+      api-host: product-lookup-by-upc-or-ean.p.rapidapi.com
