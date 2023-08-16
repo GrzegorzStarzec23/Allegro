@@ -38,10 +38,10 @@ public class CustomerOrder {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name ="customer_order_table",
             joinColumns = {
-                    @JoinColumn(name = "product_id", referencedColumnName = "id")
+                    @JoinColumn(name = "order_id", referencedColumnName = "id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "order_id", referencedColumnName ="id")
+                    @JoinColumn(name = "product_id", referencedColumnName ="id")
             })
     private List<Product> products;
 }

@@ -33,6 +33,4 @@ public class Product {
     @JoinColumn(name = "wareHouse_id", nullable = false)
     private WareHouse wareHouse;
 
-    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-    private List<CustomerOrder> customerOrders;
 }
