@@ -2,8 +2,10 @@ package com.starzec.allegro.web;
 
 import com.starzec.allegro.entity.Product;
 import com.starzec.allegro.model.ProductDto;
+import com.starzec.allegro.model.ProductEanDto;
 import com.starzec.allegro.service.ProductService;
 import com.starzec.allegro.web.request.CreateAndUpdateProductRequest;
+import com.starzec.allegro.web.request.CreateProductWithEan;
 import com.starzec.allegro.web.responce.GetProductDetails;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -51,6 +53,16 @@ public class ProductController {
         } else {
             throw new ResponseStatusException(NOT_FOUND, "Product with given id " + id + "not found");
         }
+    }
+
+    @GetMapping("/ean/{ean}")
+    public ProductEanDto findProduct(@PathVariable String ean) {
+        return productService.findProductByEan(ean);
+    }
+
+    @PostMapping("/ean")
+    public void addNewProductByEan(@RequestBody @Valid CreateProductWithEan request) {
+        productService.createNewProductWithEan(request.getEan(), request.getPrice(), request.getQuantity(), request.getWareHouseId());
     }
 
 

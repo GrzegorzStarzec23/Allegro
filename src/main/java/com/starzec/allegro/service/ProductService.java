@@ -4,6 +4,9 @@ import com.starzec.allegro.entity.Product;
 import com.starzec.allegro.entity.WareHouse;
 import com.starzec.allegro.mapper.ProductMapper;
 import com.starzec.allegro.model.ProductDto;
+import com.starzec.allegro.model.ProductEanDto;
+import com.starzec.allegro.provider.ProductProvider;
+import com.starzec.allegro.provider.ProductResponse;
 import com.starzec.allegro.repository.ProductRepository;
 import com.starzec.allegro.repository.WareHouseRepository;
 import lombok.AllArgsConstructor;
@@ -21,6 +24,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final WareHouseRepository wereHouseRepository;
     private final ProductMapper productMapper;
+    private final ProductProvider productProvider;
 
     public List<ProductDto> findAllProducts() {
         List<Product> products = productRepository.findAll();
@@ -67,5 +71,27 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public ProductEanDto findProductByEan(String ean) {
+        ProductResponse productResponse = productProvider.findProductByEAN(ean).orElseThrow();
+        ProductEanDto productEanDto = productMapper.toProductEanDto(productResponse);
+        return productEanDto;
+    }
+
+    public void createNewProductWithEan(String ean, BigDecimal price, Long quantity, Long wareHouseId) {
+        ProductResponse productResponse = productProvider.findProductByEAN(ean).orElseThrow();
+
+        WareHouse wereHouse = wereHouseRepository.findById(wareHouseId)
+                .orElseThrow(() -> new RuntimeException("Not found were house with " + wareHouseId + " id"));
+
+        Product product = new Product();
+        product.setName(productResponse.getProduct().getName());
+        product.setDescription(productResponse.getProduct().getDescription());
+        product.setPrice(price);
+        product.setQuantity(quantity);
+        product.setWareHouse(wereHouse);
+
+        productRepository.save(product);
     }
 }
