@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ProductResponse {
     private String code;
     private String codeType;
-    private ProductDto product;
+    private ProductDtoProvider product;
     private String barcodeUrl;
 
 }
